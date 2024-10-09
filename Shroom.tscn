@@ -1,0 +1,74 @@
+[gd_scene load_steps=8 format=3 uid="uid://cqm2wkcvcwwt8"]
+
+[ext_resource type="Texture2D" uid="uid://drbts5e4ykwtx" path="res://SPRITES/shroom2.png" id="1_4bh4l"]
+[ext_resource type="Script" path="res://Shroom.gd" id="1_wnvs5"]
+[ext_resource type="Texture2D" uid="uid://cxufw1xlcaf1u" path="res://SPRITES/shroom1.png" id="2_qaiir"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2xrdv"]
+size = Vector2(19, 20)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_6ek3j"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_4bh4l")
+}, {
+"duration": 1.0,
+"texture": ExtResource("1_4bh4l")
+}, {
+"duration": 1.0,
+"texture": ExtResource("1_4bh4l")
+}, {
+"duration": 1.0,
+"texture": ExtResource("1_4bh4l")
+}, {
+"duration": 1.0,
+"texture": ExtResource("1_4bh4l")
+}],
+"loop": false,
+"name": &"death",
+"speed": 1.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_qaiir")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_x2cd5"]
+size = Vector2(16, 26)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tmb6y"]
+size = Vector2(21, 19)
+
+[node name="Shroom" type="CharacterBody2D"]
+script = ExtResource("1_wnvs5")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0.5, 3)
+shape = SubResource("RectangleShape2D_2xrdv")
+metadata/_edit_lock_ = true
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_6ek3j")
+animation = &"idle"
+metadata/_edit_lock_ = true
+
+[node name="PlayerDeath" type="Area2D" parent="."]
+
+[node name="Detection" type="CollisionShape2D" parent="PlayerDeath"]
+position = Vector2(1, 1)
+shape = SubResource("RectangleShape2D_x2cd5")
+metadata/_edit_lock_ = true
+
+[node name="PlayerCollision" type="Area2D" parent="."]
+
+[node name="Detection" type="CollisionShape2D" parent="PlayerCollision"]
+position = Vector2(0.5, 3.5)
+shape = SubResource("RectangleShape2D_tmb6y")
+
+[connection signal="body_entered" from="PlayerDeath" to="." method="_on_player_death_body_entered"]
+[connection signal="body_entered" from="PlayerCollision" to="." method="_on_player_collision_body_entered"]

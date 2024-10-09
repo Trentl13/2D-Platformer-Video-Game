@@ -1,0 +1,109 @@
+[gd_scene load_steps=11 format=3 uid="uid://bxadgtfx422aa"]
+
+[ext_resource type="Script" path="res://PICHSMECH.gd" id="1_k3tcu"]
+[ext_resource type="Texture2D" uid="uid://2rkxlfqlux80" path="res://SPRITES/GODOT3.png" id="2_4v38b"]
+[ext_resource type="Texture2D" uid="uid://cb263dais5t2w" path="res://SPRITES/warrior1.png" id="3_cm38j"]
+[ext_resource type="Texture2D" uid="uid://bf3if0lkyyctv" path="res://SPRITES/warrior2.png" id="4_8fpf1"]
+[ext_resource type="Texture2D" uid="uid://db25hqaulqtxk" path="res://SPRITES/warrior3.png" id="5_0qj1x"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kpmlp"]
+size = Vector2(29, 57)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_7rddq"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_4v38b")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_4v38b")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_4v38b")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_4v38b")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_4v38b")
+}],
+"loop": false,
+"name": &"death",
+"speed": 1.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_cm38j")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_8fpf1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_8fpf1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_8fpf1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_0qj1x")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_0qj1x")
+}],
+"loop": true,
+"name": &"jump",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_xhlwo"]
+radius = 222.38
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2skh6"]
+size = Vector2(27, 56)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_txedp"]
+size = Vector2(29, 6)
+
+[node name="sword dude" type="CharacterBody2D"]
+script = ExtResource("1_k3tcu")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-1.5, 1.5)
+shape = SubResource("RectangleShape2D_kpmlp")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(-3, 2)
+scale = Vector2(1.78, 1.68)
+sprite_frames = SubResource("SpriteFrames_7rddq")
+animation = &"idle"
+
+[node name="Area2D" type="Area2D" parent="."]
+visible = false
+
+[node name="Detection" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(0, -1)
+shape = SubResource("CircleShape2D_xhlwo")
+
+[node name="PlayerDeath" type="Area2D" parent="."]
+
+[node name="Detection" type="CollisionShape2D" parent="PlayerDeath"]
+position = Vector2(-1.5, 0)
+shape = SubResource("RectangleShape2D_2skh6")
+one_way_collision_margin = 0.0
+
+[node name="PlayerCollision" type="Area2D" parent="."]
+
+[node name="Detection" type="CollisionShape2D" parent="PlayerCollision"]
+position = Vector2(-33.5, -2)
+shape = SubResource("RectangleShape2D_txedp")
+one_way_collision_margin = 0.0
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]
+[connection signal="body_entered" from="PlayerDeath" to="." method="_on_player_death_body_entered"]
+[connection signal="body_entered" from="PlayerCollision" to="." method="_on_player_collision_body_entered"]

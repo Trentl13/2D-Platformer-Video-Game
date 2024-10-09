@@ -1,0 +1,75 @@
+[gd_scene load_steps=9 format=3 uid="uid://d0ol6c0g20cul"]
+
+[ext_resource type="Script" path="res://bull_guy.gd" id="1_b6dm1"]
+[ext_resource type="Texture2D" uid="uid://c2umr4x6pf3o3" path="res://SPRITES/bull2.png" id="2_c7glg"]
+[ext_resource type="Texture2D" uid="uid://3qt307agrjoj" path="res://SPRITES/bull.png" id="3_0qeai"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7wh10"]
+size = Vector2(93, 66)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_c7g1e"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_c7glg")
+}],
+"loop": true,
+"name": &"death",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_0qeai")
+}],
+"loop": true,
+"name": &"rush",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_4appj"]
+radius = 574.171
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jlkxk"]
+size = Vector2(91, 70.5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sjqo1"]
+size = Vector2(93, 69)
+
+[node name="Bull Guy" type="CharacterBody2D"]
+script = ExtResource("1_b6dm1")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-6.5, 15)
+shape = SubResource("RectangleShape2D_7wh10")
+metadata/_edit_lock_ = true
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(3.05263, 3.00735)
+sprite_frames = SubResource("SpriteFrames_c7g1e")
+animation = &"death"
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="Detection" type="CollisionShape2D" parent="Area2D"]
+visible = false
+shape = SubResource("CircleShape2D_4appj")
+metadata/_edit_lock_ = true
+
+[node name="PlayerDeath" type="Area2D" parent="."]
+
+[node name="Detection" type="CollisionShape2D" parent="PlayerDeath"]
+position = Vector2(-6.5, 12.25)
+shape = SubResource("RectangleShape2D_jlkxk")
+metadata/_edit_lock_ = true
+
+[node name="PlayerPush" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerPush"]
+position = Vector2(-6.5, 13.5)
+shape = SubResource("RectangleShape2D_sjqo1")
+metadata/_edit_lock_ = true
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]
+[connection signal="body_entered" from="PlayerDeath" to="." method="_on_player_death_body_entered"]
+[connection signal="body_entered" from="PlayerPush" to="." method="_on_player_collision_body_entered"]

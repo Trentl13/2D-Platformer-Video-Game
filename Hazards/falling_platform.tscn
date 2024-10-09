@@ -1,0 +1,29 @@
+[gd_scene load_steps=5 format=3 uid="uid://ukme6fhgtryv"]
+
+[ext_resource type="Texture2D" uid="uid://cu1sf3bymbt0s" path="res://SPRITES/LYING_ground_forest1.png" id="1_85j57"]
+[ext_resource type="Script" path="res://Hazards/falling_platform.gd" id="1_e2v15"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_se32a"]
+size = Vector2(32, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_i4lln"]
+size = Vector2(34, 20)
+
+[node name="FallingPlatform" type="CharacterBody2D"]
+script = ExtResource("1_e2v15")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 4)
+shape = SubResource("RectangleShape2D_se32a")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_85j57")
+
+[node name="PlayerDetected" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerDetected"]
+position = Vector2(0, 3)
+shape = SubResource("RectangleShape2D_i4lln")
+metadata/_edit_lock_ = true
+
+[connection signal="body_entered" from="PlayerDetected" to="." method="_on_player_detected_body_entered"]
